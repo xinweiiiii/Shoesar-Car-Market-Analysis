@@ -1,0 +1,32 @@
+drop database if exists shoesarcar;
+
+create database shoesarcar;
+use shoesarcar;
+
+CREATE TABLE IF NOT EXISTS carinfo (
+	carplatenumber VARCHAR(10) NOT NULL,
+	brand VARCHAR(50) NOT NULL,
+	model VARCHAR(50) NOT NULL,
+	yearofmanufactured DATE NOT NULL,
+	milleage INT NOT NULL,
+	price INT NOT NULL,
+	transmission VARCHAR(8) NOT NULL,
+	dealercode INT NOT NULL,
+	enginecapacity VARCHAR(8) NOT NULL,
+	PRIMARY KEY(carplatenumber)
+);
+
+CREATE TABLE IF NOT EXISTS brand (
+	Brand VARCHAR(50) NOT NULL,
+	PRIMARY KEY(Brand)
+);
+
+CREATE TABLE IF NOT EXISTS DEALERDETAIL (
+	DEALERCODE INT NOT NULL,
+	DEALERNAME VARCHAR(50) NOT NULL,
+	DEALERLOCATION VARCHAR(100) NOT NULL,
+	DEALERCONTACT INT NOT NULL,
+	PRIMARY KEY(DEALERCODE)
+);
+
+	
