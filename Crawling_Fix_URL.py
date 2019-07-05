@@ -4,7 +4,32 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-dealercode = 1
+
+def getnextpage(url, count):
+  posNo1 = url.find("page")
+  front = url[:posNo1+5]
+  posNo2 = url.rfind("&")
+  back = url[posNo2:]
+  pageNumber = url[posNo1+5:posNo2]
+  newPageNumber = int(pageNumber) + count
+  
+  return front + str(newPageNumber) + back
+  
+  
+def mainpageextractionurl(main_url):
+  page = urllib.request.urlopen(main_url)
+  soup = BeautifulSoup(page,features="html.parser")
+  allref = soup.find_all(class_="tmm-sf-search-card-list-view__link")
+  tempurl = []
+  for singleurl in allref:
+    singleurl = str(singleurl)
+    pos1 = singleurl.find("href=")
+    pos2 = singleurl.find(">")
+    newlink = singleurl[pos1+6:pos2-1]
+    if (newlink not in tempurl):
+      tempurl.append(newlink)
+  return tempurl
+
 
 def extractdate(url, dealercode):
 
@@ -19,9 +44,14 @@ def extractdate(url, dealercode):
   fullheader = title[positionL+30:]
   positionR = fullheader.find("<")
   brandModelyear = fullheader[:positionR]
-  extractyear = brandModelyear.find(" ")
-  year = brandModelyear[:extractyear]
-  brandModel = brandModelyear[extractyear+1:]
+  if (brandModelyear[0].isdigit()):
+    extractyear = brandModelyear.find(" ")
+    year = brandModelyear[:extractyear]
+    brandModel = brandModelyear[extractyear+1:]
+  else:
+    extractyear = brandModelyear.rfind(" ")
+    year = brandModelyear[extractyear+1:]
+    brandModel = brandModelyear[:extractyear]
 
 
   #store all the car information for keydetail section
@@ -94,19 +124,24 @@ def insertintoDB(singleData, dealercode):
   mydb.commit()
 
   print(mycursor.rowcount, "record inserted.")
-  dealercode += 1
 
 
-#Auto run page to generate URL
-urltest = "https://www.trademe.co.nz/motors/used-cars/holden/auction-2203458038.htm?rsqid=77406652aa6b40d58b6e1dae8d644e6e-001"
+main_url = "https://www.trademe.co.nz/browse/categoryattributesearchresults.aspx?searchregion=100&cid=268&search=1&nofilters=1&originalsidebar=1&rptpath=1-268-&rsqid=fb59e7ae3bce42079331e5668d043b93-006&key=776208965&page=1&sort_order=mtr_best_match"
+dealercode = 1
+for i in range (0,10):
+  urlSingle = getnextpage(main_url,i)
+  pageAll = mainpageextractionurl(urlSingle)
+  for url in pageAll:
+    newurl = "https://www.trademe.co.nz/motors/used-cars" + url
+    singleData = extractdate(newurl, dealercode) 
+    insertintoDB(singleData, dealercode)
+    dealercode+=1
 
 
-urltest1 = "https://www.trademe.co.nz/motors/used-cars/toyota/auction-2207225515.htm?rsqid=d1a45702bdb144e5b3a24f7efb34ef72-001"
 
-urltest2 = "https://www.trademe.co.nz/motors/used-cars/mercedesbenz/auction-2207776231.htm?rsqid=7b28d9b8e8254592b7031e9ad1330357-001"
-singleData = extractdate(urltest, dealercode) 
-print(singleData)
-#dealer code incomplete --> Require update (Dealer address)
 
-insertintoDB(singleData, dealercode)
+
+
+
+
 
