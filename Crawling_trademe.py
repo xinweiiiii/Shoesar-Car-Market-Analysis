@@ -108,10 +108,24 @@ def extractdate(url, dealercode):
   keyData["Price"] = price
   keyData["Dealer Code"] = dealercode
   keyData["Brand"] = brandFinal
+  
+
   if (keyData["Number plate"] == ""):
     newCarPlate = getrandomcarplate()
     keyData["Number plate"] = newCarPlate
+
+  if (keyData["Number plate"] in currentNumber):
+    numberplatev1 = keyData["Number plate"]
+    numberplatev2 = numberplatev1 + "(duplicate)"
+    keyData["Number plate"] = numberplatev2
+    
   
+  currentNumber.append(keyData["Number plate"])
+  
+
+ 
+
+  print(currentNumber)
   return keyData
 
 def getrandomcarplate():
@@ -123,7 +137,7 @@ def getrandomcarplate():
     for t in range (1,5):
       tempCarplate +=  str(random.randint(1,10))
 
-  currentNumber.append(tempCarplate)
+
 
   return tempCarplate
 
