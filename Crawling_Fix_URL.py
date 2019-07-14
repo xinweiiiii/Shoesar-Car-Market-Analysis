@@ -3,13 +3,15 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import random
 
-
+#Trade me
 def getnextpage(url, count):
   posNo1 = url.find("page")
   front = url[:posNo1+5]
   posNo2 = url.rfind("&")
   back = url[posNo2:]
+  
   pageNumber = url[posNo1+5:posNo2]
   newPageNumber = int(pageNumber) + count
   
@@ -52,13 +54,18 @@ def extractdate(url, dealercode):
     extractyear = brandModelyear.rfind(" ")
     year = brandModelyear[extractyear+1:]
     brandModel = brandModelyear[:extractyear]
+  
+  getBrand = brandModel.find(" ")
+  brandFinal = brandModel[:getBrand]
+  modelAndDetail = brandModel[getBrand:]
+
 
 
   #store all the car information for keydetail section
   title1 = str(soup.find_all(class_="attributes-box key-details-box"))
   allKeyDetails = title1.split("</li>")
   
-  keyAttribute = ["Number plate", "Kilometres", "Engine size", "Transmission", "Model detail"]
+  keyAttribute = ["Number plate", "Kilometres", "Engine size", "Transmission"]
   
   for attribute in keyAttribute:
     for entry in allKeyDetails:
@@ -90,19 +97,35 @@ def extractdate(url, dealercode):
 
   #consolidating details 
   model = keyData["Model detail"]
-  checkduplicate = brandModel.find(model)
+  checkduplicate = modelAndDetail.find(model)
   if (checkduplicate == "-1"):
-    keyData["Brand"] = brandModel
+    keyData["Model detail"] = modelAndDetail
   else:
-    newModel = brandModel[:checkduplicate-1]
-    keyData["Brand"] = newModel
+    newModel = modelAndDetail[:checkduplicate-1]
+    keyData["Model detail"] = newModel
 
   keyData["Year"] = year
   keyData["Price"] = price
   keyData["Dealer Code"] = dealercode
-
+  keyData["Brand"] = brandFinal
+  if (keyData["Number plate"] == ""):
+    newCarPlate = getrandomcarplate()
+    keyData["Number plate"] = newCarPlate
+  
   return keyData
 
+def getrandomcarplate():
+  tempCarplate = "temp"
+  for n in range (1,5):
+    tempCarplate +=  str(random.randint(1,9))
+  while (tempCarplate in currentNumber):
+    tempCarplate = "temp"
+    for t in range (1,5):
+      tempCarplate +=  str(random.randint(1,10))
+
+  currentNumber.append(tempCarplate)
+
+  return tempCarplate
 
 
 def insertintoDB(singleData, dealercode):
@@ -126,16 +149,23 @@ def insertintoDB(singleData, dealercode):
   print(mycursor.rowcount, "record inserted.")
 
 
+
+#Run Main Code
 main_url = "https://www.trademe.co.nz/browse/categoryattributesearchresults.aspx?searchregion=100&cid=268&search=1&nofilters=1&originalsidebar=1&rptpath=1-268-&rsqid=fb59e7ae3bce42079331e5668d043b93-006&key=776208965&page=1&sort_order=mtr_best_match"
 dealercode = 1
-for i in range (0,10):
+tempcount = 0
+currentNumber = []
+for i in range (0,10000):
   urlSingle = getnextpage(main_url,i)
   pageAll = mainpageextractionurl(urlSingle)
   for url in pageAll:
+    tempcount += 1
     newurl = "https://www.trademe.co.nz/motors/used-cars" + url
     singleData = extractdate(newurl, dealercode) 
     insertintoDB(singleData, dealercode)
     dealercode+=1
+print(tempcount)
+
 
 
 
