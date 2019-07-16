@@ -97,7 +97,25 @@ def getrandomcarplate():
       tempCarplate +=  str(random.randint(1,10))
   return tempCarplate
 
+def insertintoDB(singleData):
+  import mysql.connector
+  mydb = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    passwd="",
+    database="shoesarcar"
+  )
 
+  mycursor = mydb.cursor()
+  sql =  " INSERT INTO carinfo3 (carplatenumber, brand, model, yearofmanufactured, milleage, price, transmission,dealercode,enginecapacity) VALUES (%s, %s, %s,%s,%s,%s,%s,%s,%s)"
+  insert_tuple = []
+  for data in singleData:
+    insert_tuple.append(singleData[data])
+
+  mycursor.execute(sql, insert_tuple)
+  mydb.commit()
+
+  print(mycursor.rowcount, "record inserted.")
 
 currentNumber = []
 dealercode = 0
@@ -107,7 +125,7 @@ resulturl = getAllPageUrl("https://www.aa.co.nz/cars/cars-for-sale/?start=" + st
 for urlOne in resulturl:
   tempurl = "https://www.aa.co.nz" + urlOne 
   temp = mainpageextractionurl(tempurl, dealercode)
-  print(temp)
+  insertintoDB(temp)
   dealercode += 1
   checkcounter += 1
   if (checkcounter == 20):
