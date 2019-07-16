@@ -27,7 +27,7 @@ def mainpageextractionurl(main_url):
     singleurl = str(singleurl)
     pos1 = singleurl.find("href=")
     pos2 = singleurl.find(">")
-    newlink = singleurl[pos1+6:pos2-1]
+    newlink = singleurl [pos1+6:pos2-1]
     if (newlink not in tempurl):
       tempurl.append(newlink)
   return tempurl
