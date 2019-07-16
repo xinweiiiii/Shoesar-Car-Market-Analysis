@@ -39,6 +39,7 @@ def mainpageextractionurl(main_url, dealercode):
 
   dataref = str(soup.find_all(class_="vehicle-attribute-wrapper"))
   categorizedataref = dataref.split("<li>")
+
   for data in categorizedataref:
     #Brand
     if ("Make" in data):
@@ -53,9 +54,9 @@ def mainpageextractionurl(main_url, dealercode):
       model = data[modelPos1+6:modelPos2]
       keyData["Model detail"] = model
     #year
-    if ("Year" in data):
-      yearPos1 = data.find("<span>")
-      year = data[yearPos1+6:yearPos1+10]
+    if ("Year<" in data):
+      yearPos1 = data.find("Year</dfn>")
+      year = data[yearPos1+17:yearPos1+21]
       keyData["Year"] = year
     #Kilometers
     if ("Odometer" in data):
@@ -100,10 +101,17 @@ def getrandomcarplate():
 
 currentNumber = []
 dealercode = 0
-resulturl = getAllPageUrl("https://www.aa.co.nz/cars/cars-for-sale/?start=0")
+number = 0
+checkcounter = 1
+resulturl = getAllPageUrl("https://www.aa.co.nz/cars/cars-for-sale/?start=" + str(number))
 for urlOne in resulturl:
   tempurl = "https://www.aa.co.nz" + urlOne 
   temp = mainpageextractionurl(tempurl, dealercode)
   print(temp)
   dealercode += 1
+  checkcounter += 1
+  if (checkcounter == 20):
+    number += 20
+    resulturl = getAllPageUrl("https://www.aa.co.nz/cars/cars-for-sale/?start=" + str(number))
+    checkcounter = 0
 
