@@ -43,7 +43,7 @@ def mainpageextractionurl(main_url, dealercode):
     soup = BeautifulSoup(page,features="html.parser")
     mainref = str(soup.find_all(class_="buy-now-header desktop"))
     
-    keyData = {"Number plate": "", "Brand": "","Model detail": "","Year":"", "Kilometres": "", "Price": "", "Transmission": "", "Dealer Code": "", "Engine size": "" }
+    keyData = {"Number plate": "", "Brand": "","Model detail": "","Year": "", "Kilometres": "", "Price": "", "Transmission": "", "Dealer Code": "", "Engine size": "" }
 
     #price
     pricePos1 = mainref.find("<p>")
@@ -74,7 +74,7 @@ def mainpageextractionurl(main_url, dealercode):
             yearDetail = data[yearPos1+11:]
             yearPos2 = yearDetail.find("</div")
             yearData = yearDetail[:yearPos2]
-            keyData["Year"] = yearData
+            keyData["Year"] = int(yearData)
         
         #Transmission
         if ("Transmission" in data):
@@ -105,7 +105,7 @@ def mainpageextractionurl(main_url, dealercode):
     keyData["Number plate"] = newCarPlate
     currentNumber.append(keyData["Number plate"])
 
-    keyData["Dealer Code"] = dealercode
+    keyData["Dealer Code"] = int(dealercode)
 
     return keyData
 
@@ -129,7 +129,7 @@ def insertintoDB(singleData):
   )
 
   mycursor = mydb.cursor()
-  sql =  " INSERT INTO carinfo4 (carplatenumber, brand, model, yearofmanufactured, milleage, price, transmission,dealercode,enginecapacity) VALUES (%s, %s, %s,%s,%s,%s,%s,%s,%s)"
+  sql =  " INSERT INTO turnercarinfo (carplatenumber, brand, model, yearofmanufactured, milleage, price, transmission,dealercode,enginecapacity) VALUES (%s, %s, %s,%s,%s,%s,%s,%s,%s)"
   insert_tuple = []
   for data in singleData:
     insert_tuple.append(singleData[data])

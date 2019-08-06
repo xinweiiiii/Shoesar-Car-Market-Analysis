@@ -57,7 +57,7 @@ def mainpageextractionurl(main_url, dealercode):
     if ("Year<" in data):
       yearPos1 = data.find("Year</dfn>")
       year = data[yearPos1+17:yearPos1+21]
-      keyData["Year"] = year
+      keyData["Year"] = int(year)
     #Kilometers
     if ("Odometer" in data):
       milleagePos1 = data.find("<span>")
@@ -83,7 +83,7 @@ def mainpageextractionurl(main_url, dealercode):
   currentNumber.append(keyData["Number plate"])
 
   dealercode += 1
-  keyData["Dealer Code"] = dealercode 
+  keyData["Dealer Code"] = int(dealercode) 
 
   return keyData
     
@@ -107,7 +107,7 @@ def insertintoDB(singleData):
   )
 
   mycursor = mydb.cursor()
-  sql =  " INSERT INTO carinfo3 (carplatenumber, brand, model, yearofmanufactured, milleage, price, transmission,dealercode,enginecapacity) VALUES (%s, %s, %s,%s,%s,%s,%s,%s,%s)"
+  sql =  " INSERT INTO aacarinfo (carplatenumber, brand, model, yearofmanufactured, milleage, price, transmission,dealercode,enginecapacity) VALUES (%s, %s, %s,%s,%s,%s,%s,%s,%s)"
   insert_tuple = []
   for data in singleData:
     insert_tuple.append(singleData[data])

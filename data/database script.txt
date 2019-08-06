@@ -1,0 +1,71 @@
+drop database if exists shoesarcar;
+
+create database shoesarcar;
+use shoesarcar;
+
+CREATE TABLE IF NOT EXISTS trademecarinfo(
+	carplatenumber VARCHAR(10) NOT NULL,
+	brand VARCHAR(20) NOT NULL,
+	model VARCHAR(50) NOT NULL,
+	yearofmanufactured INT NOT NULL,
+	milleage VARCHAR(15) NOT NULL,
+	price VARCHAR(30) NOT NULL,
+	transmission VARCHAR(20) NOT NULL,
+	dealercode INT NOT NULL,
+	enginecapacity VARCHAR(15) NOT NULL,
+	PRIMARY KEY(carplatenumber)
+);
+
+CREATE TABLE IF NOT EXISTS autotradercarinfo (
+	carplatenumber VARCHAR(10) NOT NULL,
+	brand VARCHAR(20) NOT NULL,
+	model VARCHAR(50) NOT NULL,
+	yearofmanufactured INT NOT NULL,
+	milleage VARCHAR(15) NOT NULL,
+	price VARCHAR(30) NOT NULL,
+	transmission VARCHAR(20) NOT NULL,
+	dealercode INT NOT NULL,
+	enginecapacity VARCHAR(15) NOT NULL,
+	PRIMARY KEY(carplatenumber)
+);
+
+CREATE TABLE IF NOT EXISTS aacarinfo (
+	carplatenumber VARCHAR(10) NOT NULL,
+	brand VARCHAR(20) NOT NULL,
+	model VARCHAR(50) NOT NULL,
+	yearofmanufactured INT NOT NULL,
+	milleage VARCHAR(15) NOT NULL,
+	price VARCHAR(30) NOT NULL,
+	transmission VARCHAR(20) NOT NULL,
+	dealercode INT NOT NULL,
+	enginecapacity VARCHAR(15) NOT NULL,
+	PRIMARY KEY(carplatenumber)
+);
+
+CREATE TABLE IF NOT EXISTS turnercarinfo (
+	carplatenumber VARCHAR(10) NOT NULL,
+	brand VARCHAR(20) NOT NULL,
+	model VARCHAR(50) NOT NULL,
+	yearofmanufactured INT NOT NULL,
+	milleage VARCHAR(15) NOT NULL,
+	price VARCHAR(30) NOT NULL,
+	transmission VARCHAR(20) NOT NULL,
+	dealercode INT NOT NULL,
+	enginecapacity VARCHAR(15) NOT NULL,
+	PRIMARY KEY(carplatenumber)
+);
+
+CREATE TABLE IF NOT EXISTS brand (
+	Brand VARCHAR(50) NOT NULL,
+	PRIMARY KEY(Brand)
+);
+
+CREATE TABLE IF NOT EXISTS DEALERDETAIL (
+	DEALERCODE INT NOT NULL,
+	DEALERNAME VARCHAR(50) NOT NULL,
+	DEALERLOCATION VARCHAR(100) NOT NULL,
+	DEALERCONTACT INT NOT NULL,
+	PRIMARY KEY(DEALERCODE)
+);
+
+	

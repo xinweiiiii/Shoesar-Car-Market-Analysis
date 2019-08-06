@@ -104,9 +104,9 @@ def extractdate(url, dealercode):
     newModel = modelAndDetail[:checkduplicate-1]
     keyData["Model detail"] = newModel
 
-  keyData["Year"] = year
+  keyData["Year"] = int(year)
   keyData["Price"] = price
-  keyData["Dealer Code"] = dealercode
+  keyData["Dealer Code"] = int(dealercode)
   keyData["Brand"] = brandFinal
   
 
@@ -123,9 +123,6 @@ def extractdate(url, dealercode):
   currentNumber.append(keyData["Number plate"])
   
 
- 
-
-  print(currentNumber)
   return keyData
 
 def getrandomcarplate():
@@ -152,7 +149,7 @@ def insertintoDB(singleData, dealercode):
   )
 
   mycursor = mydb.cursor()
-  sql =  " INSERT INTO carinfo (carplatenumber, brand, model, yearofmanufactured, milleage, price, transmission,dealercode,enginecapacity) VALUES (%s, %s, %s,%s,%s,%s,%s,%s,%s)"
+  sql =  " INSERT INTO trademecarinfo (carplatenumber, brand, model, yearofmanufactured, milleage, price, transmission,dealercode,enginecapacity) VALUES (%s, %s, %s,%s,%s,%s,%s,%s,%s)"
   insert_tuple = []
   for data in singleData:
     insert_tuple.append(singleData[data])

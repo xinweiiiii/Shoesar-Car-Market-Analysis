@@ -24,7 +24,7 @@ def mainpageextractionurl(main_url, dealercode):
         titleRange = requiredData[titlePos+7:titleEndPos-1]
         yearBrandModel = titleRange.split(" ")
 
-        keyData["Year"] = yearBrandModel[0]
+        keyData["Year"] = int(yearBrandModel[0])
         keyData["Brand"] = yearBrandModel[1]
         
         model = ""
@@ -64,7 +64,7 @@ def mainpageextractionurl(main_url, dealercode):
         currentNumber.append(keyData["Number plate"])
 
         dealercode += 1
-        keyData["Dealer Code"] = dealercode 
+        keyData["Dealer Code"] = int(dealercode) 
 
         insertintoDB(keyData)
 
@@ -102,7 +102,7 @@ def insertintoDB(singleData):
   )
 
   mycursor = mydb.cursor()
-  sql =  " INSERT INTO carinfo1 (carplatenumber, brand, model, yearofmanufactured, milleage, price, transmission,dealercode,enginecapacity) VALUES (%s, %s, %s,%s,%s,%s,%s,%s,%s)"
+  sql =  " INSERT INTO autotradercarinfo (carplatenumber, brand, model, yearofmanufactured, milleage, price, transmission,dealercode,enginecapacity) VALUES (%s, %s, %s,%s,%s,%s,%s,%s,%s)"
   insert_tuple = []
   for data in singleData:
     insert_tuple.append(singleData[data])
