@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 import random
 
 #Trade me
-def getnextpage(url, count):
-  posNo1 = url.find("page")
+def getnextpage(url, count): #Extract the url for next page
+  posNo1 = url.find("page") 
   front = url[:posNo1+5]
   posNo2 = url.rfind("&")
   back = url[posNo2:]
@@ -18,7 +18,7 @@ def getnextpage(url, count):
   return front + str(newPageNumber) + back
   
   
-def mainpageextractionurl(main_url):
+def mainpageextractionurl(main_url): #extract all the car detail url from a page and store into a list
   page = urllib.request.urlopen(main_url)
   soup = BeautifulSoup(page,features="html.parser")
   allref = soup.find_all(class_="tmm-sf-search-card-list-view__link")
@@ -33,7 +33,7 @@ def mainpageextractionurl(main_url):
   return tempurl
 
 
-def extractdate(url, dealercode):
+def extractdate(url, dealercode): #extracting information from a single url
 
   keyData = {"Number plate": "", "Brand": "","Model detail": "","Year":"", "Kilometres": "", "Price": "", "Transmission": "", "Dealer Code": "", "Engine size": "" }
 #website 1 
@@ -125,7 +125,7 @@ def extractdate(url, dealercode):
 
   return keyData
 
-def getrandomcarplate():
+def getrandomcarplate(): #Generate random car plate number
   tempCarplate = "temp"
   for n in range (1,5):
     tempCarplate +=  str(random.randint(1,9))
@@ -139,7 +139,7 @@ def getrandomcarplate():
   return tempCarplate
 
 
-def insertintoDB(singleData, dealercode):
+def insertintoDB(singleData, dealercode): #Storing into the database
   import mysql.connector
   mydb = mysql.connector.connect(
     host="localhost",

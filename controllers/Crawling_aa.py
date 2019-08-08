@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import random
 
 
-def getAllPageUrl(startingurl):
+def getAllPageUrl(startingurl): #extract all the url in a page and store it into a list
   req = Request(startingurl, headers={'User-Agent': 'Mozilla/5.0'})
   page = urlopen(req).read()
   soup = BeautifulSoup(page,features="html.parser")
@@ -23,7 +23,7 @@ def getAllPageUrl(startingurl):
 
   return urlarray 
 
-def mainpageextractionurl(main_url, dealercode):
+def mainpageextractionurl(main_url, dealercode): #extracting information from a single url
   req = Request(main_url, headers={'User-Agent': 'Mozilla/5.0'})
   page1 = urlopen(req).read()
   soup = BeautifulSoup(page1,features="html.parser")
@@ -87,7 +87,7 @@ def mainpageextractionurl(main_url, dealercode):
 
   return keyData
     
-def getrandomcarplate():
+def getrandomcarplate(): #generate random car plate number
   tempCarplate = "temp"
   for n in range (1,5):
     tempCarplate +=  str(random.randint(1,9))
@@ -97,7 +97,7 @@ def getrandomcarplate():
       tempCarplate +=  str(random.randint(1,10))
   return tempCarplate
 
-def insertintoDB(singleData):
+def insertintoDB(singleData): #store information into the database
   import mysql.connector
   mydb = mysql.connector.connect(
     host="localhost",
@@ -117,6 +117,7 @@ def insertintoDB(singleData):
 
   print(mycursor.rowcount, "record inserted.")
 
+#run main code
 currentNumber = []
 dealercode = 0
 number = 0
@@ -128,7 +129,7 @@ for urlOne in resulturl:
   insertintoDB(temp)
   dealercode += 1
   checkcounter += 1
-  if (checkcounter == 20):
+  if (checkcounter == 20): #every page there is 20 entries
     number += 20
     resulturl = getAllPageUrl("https://www.aa.co.nz/cars/cars-for-sale/?start=" + str(number))
     checkcounter = 0

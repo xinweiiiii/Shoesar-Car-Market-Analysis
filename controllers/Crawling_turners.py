@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 import random
 
 
-def getMaxPageNumber(firstPageUrl):
-    req = Request(firstPageUrl, headers={'User-Agent': 'Mozilla/5.0'})
+def getMaxPageNumber(firstPageUrl): #Get the final page number 
+    req = Request(firstPageUrl, headers={'User-Agent': 'Mozilla/5.0'}) #change the web agent 
     page = urlopen(req).read()
     soup = BeautifulSoup(page,features="html.parser")
     mainref = str(soup.find_all(class_="results-pagelink"))
@@ -22,7 +22,7 @@ def getMaxPageNumber(firstPageUrl):
                 listOfNum.append(int(addPage))
     return max(listOfNum)
 
-def getcarlisting(url):
+def getcarlisting(url): #retrieve all the vehicle data url and store into a list
     req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
     page = urlopen(req).read()
     soup = BeautifulSoup(page,features="html.parser")
@@ -37,7 +37,7 @@ def getcarlisting(url):
     
     return singlePageUrl
 
-def mainpageextractionurl(main_url, dealercode):
+def mainpageextractionurl(main_url, dealercode): #extracting information from a single url
     req = Request(main_url, headers={'User-Agent': 'Mozilla/5.0'})
     page = urlopen(req).read()
     soup = BeautifulSoup(page,features="html.parser")
@@ -45,7 +45,7 @@ def mainpageextractionurl(main_url, dealercode):
     
     keyData = {"Number plate": "", "Brand": "","Model detail": "","Year": "", "Kilometres": "", "Price": "", "Transmission": "", "Dealer Code": "", "Engine size": "" }
 
-    #price
+    #price 
     pricePos1 = mainref.find("<p>")
     pricePos2 = mainref.find("</p>")
     extractPart1Info = mainref[pricePos1+3:pricePos2]
@@ -56,7 +56,6 @@ def mainpageextractionurl(main_url, dealercode):
     secondaryRef = str(soup.find_all(class_="table-module"))
     listView = secondaryRef.split("row-detail")
     newView = listView[1:]
-    #print(newView)
     for data in newView:
         #vehicle 
         if ("Vehicle" in data):
@@ -109,7 +108,7 @@ def mainpageextractionurl(main_url, dealercode):
 
     return keyData
 
-def getrandomcarplate():
+def getrandomcarplate(): #Generate random car plate number
   tempCarplate = "temp"
   for n in range (1,5):
     tempCarplate +=  str(random.randint(1,9))
@@ -118,8 +117,8 @@ def getrandomcarplate():
     for t in range (1,5):
       tempCarplate +=  str(random.randint(1,10))
   return tempCarplate
-        
-def insertintoDB(singleData):
+         
+def insertintoDB(singleData): #Storing into the database
   import mysql.connector
   mydb = mysql.connector.connect(
     host="localhost",
@@ -139,12 +138,10 @@ def insertintoDB(singleData):
 
   print(mycursor.rowcount, "record inserted.")
 
- 
+#Missing a try catch to show unsuccessful insertion and include the count
         
-
-
+#Run Main Code
 getTotalPage = getMaxPageNumber("https://www.turners.co.nz/Cars/Used-Cars-for-Sale/?sortorder=7&pagesize=24&pageno=1")
-
 dealercode = 0
 currentNumber = [] 
 for i in range (1,getTotalPage):

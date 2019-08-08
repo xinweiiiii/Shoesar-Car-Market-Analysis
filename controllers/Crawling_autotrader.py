@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import random
 
-def mainpageextractionurl(main_url, dealercode):
+def mainpageextractionurl(main_url, dealercode): #extracting information from a single url
     page = urllib.request.urlopen(main_url)
     soup = BeautifulSoup(page,features="html.parser")
     allref = soup.find_all(class_="list-item premium-listing")
@@ -69,7 +69,7 @@ def mainpageextractionurl(main_url, dealercode):
         insertintoDB(keyData)
 
 
-def getrandomcarplate():
+def getrandomcarplate(): #generate random car platenumber
   tempCarplate = "temp"
   for n in range (1,5):
     tempCarplate +=  str(random.randint(1,9))
@@ -79,7 +79,7 @@ def getrandomcarplate():
       tempCarplate +=  str(random.randint(1,10))
   return tempCarplate
 
-def getfinalpage(main_url):
+def getfinalpage(main_url): #locate the last page number
   page = urllib.request.urlopen(main_url)
   soup = BeautifulSoup(page,features="html.parser")
   allref = str(soup.find_all(class_="no-border"))
@@ -92,7 +92,7 @@ def getfinalpage(main_url):
   
   return pageNumber
 
-def insertintoDB(singleData):
+def insertintoDB(singleData): #storing information into the database 
   import mysql.connector
   mydb = mysql.connector.connect(
     host="localhost",
@@ -112,7 +112,7 @@ def insertintoDB(singleData):
 
   print(mycursor.rowcount, "record inserted.")
 
-
+#run main code
 currentNumber = []
 dealercode = 0
 startingPage = "https://www.autotrader.co.nz/used-cars-for-sale?page=1"
