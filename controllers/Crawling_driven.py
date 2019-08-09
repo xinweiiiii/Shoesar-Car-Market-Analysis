@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 #import matplotlib.pyplot as plt
 import random
+import requests
 
 
 def getMaxPageNumber(firstPageUrl): #Get the final page number
@@ -21,14 +22,16 @@ def getMaxPageNumber(firstPageUrl): #Get the final page number
 def getcarlisting(url): #retrieve all the vehicle data url and store into a list
     # maxPage = getMaxPageNumber(url)
     maxPage = 49
-    pageSize = 24
+    pageSize = 0
     page = ""
     mainref = ""
+    session = requests.Session()
     while pageSize < maxPage:
-        req = Request("https://www.driven.co.nz/used-cars-for-sale/", headers={'User-Agent': 'Mozilla/5.0'})
-        page = urlopen(req).read()
-        soup = BeautifulSoup(page,features="html.parser")
-        mainref = str(soup.find_all(class_="listing-item"))
+        req = session.post("https://www.driven.co.nz/used-cars-for-sale/", headers={'User-Agent': 'Mozilla/5.0'})
+        # page = urlopen(req).read()
+        page = BeautifulSoup(req.content)
+        # soup = BeautifulSoup(page,features="html.parser")
+        mainref = str(page.find_all(class_="listing-item"))
 
         pageSize += 24
         print(pageSize)
