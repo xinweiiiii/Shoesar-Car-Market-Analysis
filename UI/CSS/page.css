@@ -1,0 +1,16 @@
+table.a {
+  table-layout: auto;
+  width: 180px; 
+}
+
+.container {
+    height: 6%;
+    background: grey;
+    padding-top: 0.7%
+}
+
+.containeroutside {
+    background:white;
+    width: 95%;
+    margin: auto;
+}

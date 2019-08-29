@@ -14,7 +14,7 @@ def getMaxPageNumber(firstPageUrl): #Get the final page number
     selectedPage = mainref.split(",")
     listOfNum = []
     for singleData in selectedPage:
-        if ("data-pageno" in singleData):
+        if ("data-pageno" in singleData):x
             pagePos1 = singleData.find("href")
             pagePos2 = singleData.rfind("</a>")
             addPage = singleData[pagePos1+9:pagePos2]
