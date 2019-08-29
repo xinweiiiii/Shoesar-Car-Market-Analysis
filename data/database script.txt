@@ -55,6 +55,19 @@ CREATE TABLE IF NOT EXISTS turnercarinfo (
 	PRIMARY KEY(carplatenumber)
 );
 
+CREATE TABLE IF NOT EXISTS drivencarinfo (
+	carplatenumber VARCHAR(10) NOT NULL,
+	brand VARCHAR(20) NOT NULL,
+	model VARCHAR(50) NOT NULL,
+	yearofmanufactured INT NOT NULL,
+	milleage VARCHAR(15) NOT NULL,
+	price VARCHAR(30) NOT NULL,
+	transmission VARCHAR(20) NOT NULL,
+	dealercode INT NOT NULL,
+	enginecapacity VARCHAR(15) NOT NULL,
+	PRIMARY KEY(carplatenumber)
+);
+
 CREATE TABLE IF NOT EXISTS brand (
 	Brand VARCHAR(50) NOT NULL,
 	PRIMARY KEY(Brand)
