@@ -52,7 +52,11 @@ def extractdata(url, dealercode): #extracting information from a single url
     posMilleage1 = milleageData.find("row_info")
     tempMilleage = milleageData[posMilleage1:]
     posMilleage2 = tempMilleage.find("(")
-    finalMilleage = tempMilleage[10:posMilleage2].strip("\r\n").strip(" ")
+    if posMilleage2 == -1:
+      nextPosMillegePos = tempMilleage.find(".")
+      finalMilleage = tempMilleage[10:nextPosMillegePos]
+    else:
+      finalMilleage = tempMilleage[10:posMilleage2].strip("\r\n").strip(" ")
     keyData["Kilometres"] = finalMilleage
     
     alldata = listTitle[2].split("row_title")
@@ -165,6 +169,7 @@ startingPage = "https://www.sgcarmart.com/used_cars/listing.php?BRSR=0&RPG=20"
 allpageData = set(getindvidual(startingPage))
 for single in allpageData:
     urlsingle = "https://www.sgcarmart.com/used_cars/" + single
+    print(urlsingle)
     data = extractdata(urlsingle, dealercode)
     insertintoDB(data)
 tempvalue = 0
